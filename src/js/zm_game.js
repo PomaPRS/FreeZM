@@ -25,6 +25,7 @@ var dx = [0, -1, 0, 1];
 var dy = [-1, 0, 1, 0];
 
 var field;
+var pressedKey = false;
 
 function setRandomNewCell() {
 	getCell(new_x, new_y).removeClass("game-zm-food");
@@ -52,6 +53,7 @@ function getCell(x, y) {
 }
 
 function gameStep() {
+	pressedKey = false;
 	getCell(x, y).removeClass("game-zm-head");
 	
 	x += dx[d];
@@ -130,7 +132,7 @@ function initField() {
 	}
 }
 
-function loadPage() {	
+function initHtmlGrid() {
 	var grid = document.getElementById('game-grid');
 
 	for (var i = 0; i < FIELD_HEIGHT; ++i) {
@@ -148,12 +150,17 @@ function loadPage() {
 		
 		grid.appendChild(row);
 	}
-	
+}
+
+function loadPage() {
+	initHtmlGrid();
 	initField();
 	setRandomNewCell();
 		
 	$(document).keydown(function(e) {
-		if (!isPause) {			
+		if (!isPause && !pressedKey) {
+			pressedKey = true;
+			
 			if (e.keyCode == KEY_LEFT)
 				setMoveLeft();
 			else if (e.keyCode == KEY_UP)

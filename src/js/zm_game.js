@@ -41,11 +41,18 @@ function setRandomNewCell() {
 		}
 	}
 	
-	var pos = Math.floor((Math.random() * freeCellsCount));
-	new_x = freeCells[pos].x;
-	new_y = freeCells[pos].y;
-	
-	getCell(new_x, new_y).addClass("game-zm-food");
+	if (freeCellsCount == 0)
+	{
+		new_x = -1;
+		new_y = -1;
+	}
+	else
+	{
+		var pos = Math.floor(Math.random() * freeCellsCount);
+		new_x = freeCells[pos].x;
+		new_y = freeCells[pos].y;
+		getCell(new_x, new_y).addClass("game-zm-food");
+	}	
 }
 
 function getCell(x, y) {
@@ -83,13 +90,12 @@ function gameStep() {
 			}					
 		}
 	}
-	
-	if (tailIncrease) {
-		setRandomNewCell();
-	}
-	
 	field[x][y] = 1;
 	getCell(x, y).addClass("game-zm-head");
+	
+	if (tailIncrease || new_x == -1 || new_y == -1) {
+		setRandomNewCell();
+	}	
 }
 
 function setMoveLeft() {
